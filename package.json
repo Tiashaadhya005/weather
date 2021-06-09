@@ -1,0 +1,16 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "for creating dynamic weather website",
+  "main": "weather_node1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tiasha adhya",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.7",
+    "request": "^2.88.2",
+    "requests": "^0.3.0"
+  }
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&display=swap');
+    *{
+        padding: 0;
+        margin:0;
+
+    }
+    body{
+        background: rgba(193, 248, 248, 0.712);
+        display: flex;
+        /*justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        height:100vh;
+        width:80vh;*/
+    }
+    .container{
+        height: 90vh;
+        width:50vh;
+        border-radius: 0.7rem;
+        margin-left:80vh;
+        margin-top: 6vh;
+        background: burlywood;
+        overflow: hidden;
+        transform: translate3d(0,0,0);
+    }
+    .wave{
+        opacity:0.3;
+        position:absolute;
+        top: 110%;
+        left: 50%;
+        width:50rem;
+        height: 50rem;
+        margin-left: -25rem;
+        margin-top: -19rem;
+        transform-origin: 50% 48%;
+        border-radius: 43%;
+        animation: drift 3000ms infinite  linear;
+        z-index: 1;
+        background: white;
+    }
+    .wave#first{
+        opacity: 0.2;
+    }
+    .wave#second{
+        animation: drift 7000ms infinite  linear;
+        opacity:0.1;
+        z-index: 3 !important;
+    }
+    .wave#third{
+        animation: drift 5000ms infinite  linear;
+        opacity:0.2;
+        z-index: 2 !important;
+    }
+    .container:after{
+        content: "";
+        display: block;
+        left: 0;
+        top:0;
+        width:100%;
+        height:100%;
+        z-index: 9;
+        transform: translate3d(0,0,0);
+    }
+    @keyframes drift {
+        from{
+            transform: rotate(0deg);
+        }
+        from{
+            transform: rotate(360deg);
+        }
+    }
+    #weathericon{
+        height:55%;
+        display:flex;
+        top:0%;
+        justify-content: center;
+        align-items:center;
+        font-size: 3em;
+        margin-top: 0%;
+        padding-top:0%;
+    }
+    #weathericon .fas{
+        font-size: 6rem;
+        animation: fas-anime 3s linear infinite alternate;
+    }
+    @keyframes fas-anime {
+        from{
+            transform:scale(0.8);
+        }
+        to{
+            transform:scale(1);
+        }    
+    }
+    #fo{
+        position: absolute;
+        bottom: 0;
+        width:100%;
+        height: 45%;
+        z-index: 2;
+    }
+    .location{
+        top: -2px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0%;
+        padding-bottom: 0%;
+        padding-top: 0%;
+        margin-top: 0%;
+        line-height: 85%;
+    }
+    #date{
+        text-align: center;
+        margin-top: 0.2rem;
+        padding-top: 0.1rem;
+        color:black;
+        font-size:1.2rem;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+    .temperature{
+        margin-top:0%;
+        padding-top:0%;
+        text-align: center;
+        font-size: 3rem;
+        font-size:2rem;
+    }
+    .tminmax{
+        text-align: center;
+        margin-top:0.16rem;
+        font-weight:300;
+        font-size:1.2rem;
+        color:black;
+    }
+
+    h2{
+        font-family:'Baloo Tammudu 2',cursive; 
+    }
+    h4{
+        text-align: center;
+        line-height: 90%;
+        margin-top: 12%;
+        font-size: 1.1rem;
+    }
+</style>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" 
+        referrerpolicy="no-referrer" />
+        <title>Weather report</title>
+        
+    </head>
+    <body>
+        <div class="container">
+            <div id="weathericon">
+                <i class="fas fa-sun" style="color:rgb(247, 107, 83)"></i></div>   
+        <div class="wave" id="first"></div>
+        <div class="wave" id="second"></div>
+        <div class="wave" id="third"></div>
+<!---<div id="weathericon">
+            <i class="fas fa-sun" style="color:rgb(247, 107, 83)"></i>
+        </div>--->
+        <div id="fo">
+            <h2 class="location" ><i class="fas fa-map-marked-alt"></i>{%place%},{%country%}</h2>
+            <h4 id="date">Oct|23|10:59</h4>
+            <h1 class="temperature">{%temp%}&deg;C</h1>
+            <h3 class="tminmax">Min: {%tempmin%}&deg;C | Max: {%tempmax%}&deg;C</h3>
+            <h4>Feels like:{%tempfeel%}&deg;C</h4>
+        </div>
+        </div>
+        <script>
+            let todaydate=document.getElementById("date");
+            let weather=document.getElementById("weathericon");
+            let temperaturestatus="{%tempstatus%}";
+            const getCurrentDay=() =>{
+                var weekday=new Array(7);
+                weekday[0]="Sunday";
+                weekday[1]="Monday";
+                weekday[2]="Tuesday";
+                weekday[3]="Wednesday";
+                weekday[4]="Thursday";
+                weekday[5]="Friday";
+                weekday[6]="Saturday";
+
+                let currenttime=new Date();
+                day= weekday[currenttime.getDay()];
+                //console.log(day);
+                return day;
+            };
+            const getCurrentTime=()=>{
+                var months=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+                let now=new Date();
+                let month=months[now.getMonth()+1];
+                let date=now.getDate();
+                console.log(month+"/"+day)
+                var hours=now.getHours();
+                let mins=now.getMinutes();
+                
+                let p="AM";
+                if(hours>11){p="PM";}
+                if(hours>12){hours-=12;}
+                if(mins<10){
+                    mins="0"+mins;
+                }
+                return `${month} ${date} | ${hours}:${mins}${p}`
+            };
+            todaydate.innerHTML=getCurrentDay()+" | "+getCurrentTime();
+            if (temperaturestatus=="Sunny"){
+                weathericon.innerHTML="<i class='fas fa-sun' style='color:rgb(247, 107, 83)'></i>"
+            }
+            else if (temperaturestatus=="Clouds"){
+                weathericon.innerHTML="<i class='fas fa-cloud' style='color:rgb(255,255,255)'></i> "
+                //document.getElementsByClassName("container").background="rgb(0,0,255)";
+                //console.log(i);
+                var yy= document.querySelector(".container");
+                yy.style.backgroundColor="blue"
+            }
+            else if (temperaturestatus=="Rain"){
+                weathericon.innerHTML="<i class='fas fa-cloud-rain' style='color:white'></i>"
+                var yy= document.querySelector(".container");
+                yy.style.backgroundColor="grey";
+            }
+            else{
+                weathericon.innerHTML="<i class='fas fa-sun' style='color:rgb(247, 107, 83)'></i>"
+            }
+        </script>
+    </body>
+</html>
